@@ -1,0 +1,4 @@
+- project:
+    name: trigger_test
+    jobs:
+        - trigger_test

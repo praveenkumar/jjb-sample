@@ -1,0 +1,36 @@
+# Builders
+- builder:
+    name: pep8_pylint
+    builders:
+       - shell: |
+            for f in `find . -name '*.py'|egrep -v '^./tests/'`; do
+            pylint -E --output-format=parseable --reports=y $f >> pylint.out
+            done || :
+
+- builder:
+    name: rpmlint
+    builders:
+        - shell: |
+            rpmlint -i *.spec
+
+# Publisher
+- publisher:
+    name: violation
+    publishers:
+        - violations:
+            pep8:
+                min: 0
+                max: 20
+                unstable: 20
+                pattern: '**/pep8.out'
+            pylint:
+                min: 0
+                max: 20
+                unstable: 20
+                pattern: '**/pylint.out'
+
+- publisher:
+    name: nosetests
+    publishers:
+        - junit:
+            results: nosetests.xml

@@ -1,0 +1,27 @@
+- job-template:
+    name: 'trigger_test'
+    project-type: freestyle
+    node: fedora20
+    scm:
+        - git:
+            url: 'https://github.com/fedora-infra/trigger_test.git'
+            name: 'trigger_test'
+            refspec: '+refs/heads/develop'
+            branches:
+                - refs/heads/develop
+            wipe-workspace: true
+            skip-tag: true
+    builders:
+        - pep8_pylint
+        - rpmlint
+        - shell: |
+            virtualenv trigger_test
+            source trigger_test/bin/activate
+            pip install nosetests
+            pip install requirements.txt
+            nosetests -v --with-xcoverage
+
+- job-group:
+    name: trigger_test
+    jobs:
+        - 'trigger_test'
