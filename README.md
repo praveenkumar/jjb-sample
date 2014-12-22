@@ -10,4 +10,5 @@ How to run
 ----------
 
 Generate jenkins job xml file: `jenkins-jobs test jjb/`
+
 Create jobs on Jenkins after configure JJB: `jenkins-jobs update jjb/`
